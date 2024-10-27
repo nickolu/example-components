@@ -1,14 +1,22 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@mui/material";
-import { DialogActions, DialogContent, DialogTitle } from "@mui/material";
-import { Dialog } from "@mui/material";
+import {} from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 export type ConfirmationModalProps = {
-  isOpen: boolean;
   onClose: () => void;
   action: () => void;
+  isOpen: boolean;
   title?: string;
   modalContent: React.ReactNode;
 };
@@ -29,11 +37,33 @@ export const ConfirmationModal = ({
 }: ConfirmationModalProps) => {
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      {Boolean(title) && <DialogTitle>{title}</DialogTitle>}
-      <DialogContent>{modalContent}</DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={action}>Confirm</Button>
+      <DialogTitle sx={{ padding: 2 }}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          {Boolean(title) && <div>{title}</div>}
+          {onClose && (
+            <Box sx={{ position: "relative", right: -8, top: -8 }}>
+              <IconButton size="small" onClick={onClose}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          )}
+        </Box>
+      </DialogTitle>
+
+      <DialogContent sx={{ padding: 2 }}>{modalContent}</DialogContent>
+      <DialogActions sx={{ padding: 2 }}>
+        <Button color="error" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button
+          color="success"
+          onClick={() => {
+            action();
+            onClose();
+          }}
+        >
+          Confirm
+        </Button>
       </DialogActions>
     </Dialog>
   );
